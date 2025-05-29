@@ -10,6 +10,7 @@ let caughtPrimes = [];
 let lastSpawnTime = 0;
 let spawnInterval = 1500; // 1.5秒
 let gameClear = false;
+let gameState = "intro"; // intro: 規則說明, play: 遊戲進行, over: 結束, clear: 過關
 
 function preload() {
   // Initialize HandPose model with flipped video input
@@ -53,6 +54,27 @@ let gameOver = false;
 let restartBtn = { x: 0, y: 0, w: 180, h: 60 };
 
 function draw() {
+  background(255);
+
+  if (gameState === "intro") {
+    // 規則說明頁
+    fill(0);
+    textAlign(CENTER, CENTER);
+    textSize(32);
+    text("數字氣球質數手勢遊戲", width/2, 80);
+    textSize(20);
+    text(
+      "規則：\n" +
+      "1. 畫面會掉落數字氣球（0~9）。\n" +
+      "2. 用兩手使指間牽起的紅線接住質數（2,3,5,7）。\n" +
+      "3. 接到非質數或質數掉到底沒接到會扣血。\n" +
+      "4. 生命值歸零遊戲結束，接到所有質數即過關。\n\n" +
+      "請點擊畫面任意處開始遊戲！",
+      width/2, height/2
+    );
+    return;
+  }
+
   if (gameOver) {
     background(0, 150);
     fill(255, 0, 0);
@@ -239,6 +261,12 @@ function drawLife() {
 }
 
 function mousePressed() {
+  if (gameState === "intro") {
+    gameState = "play";
+    restartGame();
+    return;
+  }
+
   if (gameOver) {
     if (
       mouseX > restartBtn.x &&
@@ -270,6 +298,7 @@ function restartGame() {
   caughtPrimes = [];
   circles = [];
   lastSpawnTime = millis();
+  gameState = "play";
   // 其餘初始化內容
 }
 
