@@ -57,7 +57,7 @@ function draw() {
   // 漸層背景（由上到下，從淡藍到白）
   for (let i = 0; i < height; i++) {
     let inter = map(i, 0, height, 0, 1);
-    let c = lerpColor(color(180, 220, 255), color(255, 255, 255), inter);
+    let c = lerpColor(color(168,218,220), color(69,123,157), inter);
     stroke(c);
     line(0, i, width, i);
   }
